@@ -1,0 +1,62 @@
+﻿@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form method="post">
+    <div class="mb-4 mt-5 d-flex justify-content-between">
+        <h2>Users</h2>
+        <div id="buttons">
+            <button class="btn btn-secondary" asp-action="Block">Block</button>
+            <button class="btn btn-success" asp-action="Unblock">Unblock</button>
+            <button class="btn btn-danger" asp-action="Delete">Delete</button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>
+                <input id="all" type="checkbox"/> All
+            </td>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Last login date</th>
+            <th scope="col">Registration date</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    <input id="user" name="@user.Id" type="checkbox"/>
+                </td>
+                <td>@user.Id</td>
+                @if (Context.User.Identity.Name == user.Id.ToString())
+                {
+                    <td>@user.Name (you)</td>    
+                }
+                else
+                {
+                    <td>@user.Name</td>
+                }
+                
+                <td>@user.Email</td>
+                <td>@user.LastLoginDate</td>
+                <td>@user.CreatedDate</td>
+                @if (user.IsBlocked)
+                {
+                    <td class="text-danger">blocked</td>
+                }
+                else
+                {
+                    <td class="text-success">active</td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</form>
